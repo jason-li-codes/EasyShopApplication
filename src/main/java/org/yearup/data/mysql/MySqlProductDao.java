@@ -53,7 +53,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
             ResultSet row = statement.executeQuery();
 
             while (row.next()) {
-                Product product = mapRow(row);
+                Product product = mapProductRow(row);
                 products.add(product);
             }
         }
@@ -83,7 +83,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
             ResultSet row = statement.executeQuery();
 
             while (row.next()) {
-                Product product = mapRow(row);
+                Product product = mapProductRow(row);
                 products.add(product);
             }
         } catch (SQLException e) {
@@ -109,7 +109,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
             ResultSet row = statement.executeQuery();
 
             if (row.next()) {
-                return mapRow(row);
+                return mapProductRow(row);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -215,7 +215,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
         }
     }
 
-    protected static Product mapRow(ResultSet row) throws SQLException {
+    protected static Product mapProductRow(ResultSet row) throws SQLException {
 
         int productId = row.getInt("product_id");
         String name = row.getString("name");
