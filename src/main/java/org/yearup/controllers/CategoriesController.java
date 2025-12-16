@@ -69,12 +69,10 @@ public class CategoriesController {
     public List<Product> getProductsById(@PathVariable int categoryId) {
 
         try {
-            var category = categoryDao.getById(categoryId);
-            if (category == null)
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
+            return productDao.listByCategoryId(categoryId);
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
-
     }
 
     @PostMapping()
@@ -82,7 +80,11 @@ public class CategoriesController {
     // insert the category
     public Category addCategory(@RequestBody Category category) {
 
-        return null;
+        try {
+            return categoryDao.create(category);
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
     }
 
     @PutMapping("{id}")
@@ -90,14 +92,22 @@ public class CategoriesController {
     // update the category by id
     public void updateCategory(@PathVariable int id, @RequestBody Category category) {
 
+        try {
+            categoryDao.update(id, category);
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
     }
-
 
     @DeleteMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     // delete the category by id
     public void deleteCategory(@PathVariable int id) {
 
-
+        try {
+            categoryDao.delete(id);
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
     }
 }
