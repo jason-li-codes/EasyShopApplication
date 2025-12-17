@@ -94,6 +94,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
 
     @Override
     public Product getById(int productId) {
+
         String sql = """
                 SELECT
                     *
