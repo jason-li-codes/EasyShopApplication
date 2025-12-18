@@ -134,7 +134,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
     }
 
     @Override
-    public void updateItemShoppingCart(int userId, ShoppingCartItem item) {
+    public ShoppingCart updateItemShoppingCart(int userId, ShoppingCartItem item) {
 
         String sql = """
                 UPDATE
@@ -154,6 +154,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
 
             int rows = preparedStatement.executeUpdate();
             if (rows == 0) throw new SQLException("Update failed, no rows affected!");
+            return getByUserId(userId);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
