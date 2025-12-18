@@ -52,7 +52,7 @@ public class AuthenticationController {
 
         try
         {
-            User user = userDao.getByUserName(loginDto.getUsername());
+            User user = userDao.getUserByUserName(loginDto.getUsername());
 
             if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
