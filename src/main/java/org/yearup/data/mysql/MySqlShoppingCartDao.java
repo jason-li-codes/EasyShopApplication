@@ -13,6 +13,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * MySQL implementation of the ShoppingCartDao interface.
+ * This class handles database operations related to a user's shopping cart,
+ * including retrieving cart contents, adding items, updating quantities,
+ * and removing items. It uses JDBC with parameterized SQL statements to
+ * ensure secure database access. The class is managed by Spring and relies
+ * on a shared MySQL DAO base for connection handling.
+ */
 @Component
 public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDao {
     // constructor to initialize the data source
@@ -20,6 +28,14 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         super(dataSource);
     }
 
+    /**
+     * Retrieves the current shopping cart for a specific user.
+     * This method queries the shopping_cart table and joins product data
+     * to fully populate each ShoppingCartItem with product details and quantities.
+     * Each row in the result set is converted into a ShoppingCartItem and added
+     * to a ShoppingCart object. If the user has no items, an empty shopping cart
+     * is returned.
+     */
     @Override
     public ShoppingCart getByUserId(int userId) {
         // instantiate new empty ShoppingCart object
@@ -67,6 +83,13 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         }
     }
 
+    /**
+     * Retrieves a shopping cart representation based on a completed order.
+     * This method queries order line items and joins related order and product
+     * data to rebuild the contents of the cart associated with the given order.
+     * Each product and quantity is mapped into a ShoppingCartItem and added
+     * to a ShoppingCart object. This is commonly used for viewing past orders.
+     */
     @Override
     public ShoppingCart getByOrderId(int orderId) {
         // instantiate new empty ShoppingCart object
@@ -115,6 +138,13 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         }
     }
 
+    /**
+     * Adds a product to a user's shopping cart.
+     * If the product already exists in the cart, its quantity is incremented
+     * by one using a database-level duplicate key update. This method ensures
+     * that cart state remains consistent without requiring separate checks.
+     * After the update, the refreshed ShoppingCart is retrieved and returned.
+     */
     @Override
     public ShoppingCart addItem(int userId, ShoppingCartItem item) {
         // parameterized SQL to add new item or increment quantity if it already exists
@@ -140,6 +170,13 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         }
     }
 
+    /**
+     * Updates the quantity of a specific item in a user's shopping cart.
+     * This method executes a parameterized update query using the user ID
+     * and product ID to identify the correct cart item. If no rows are affected,
+     * the update is considered unsuccessful and an exception is thrown.
+     * This method does not return a value after completion.
+     */
     @Override
     public void updateItem(int userId, ShoppingCartItem item) {
         // parameterized SQL to update the quantity of an item in the shopping cart
@@ -168,6 +205,13 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         }
     }
 
+    /**
+     * Deletes all items from a user's shopping cart.
+     * This method removes every cart entry associated with the specified user ID
+     * from the shopping_cart table. It is typically used after checkout or when
+     * a user explicitly clears their cart. The operation completes without
+     * returning any data.
+     */
     @Override
     public void deleteShoppingCart(int userId) {
         // parameterized SQL to delete all items for a given user
@@ -189,6 +233,13 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         }
     }
 
+    /**
+     * Calculates the total monetary value of a shopping cart.
+     * This method delegates the calculation to the ShoppingCart model,
+     * which sums the price of each product multiplied by its quantity.
+     * It provides a simple way to retrieve the cart total without
+     * performing additional database queries.
+     */
     @Override
     public BigDecimal getShoppingCartTotal(ShoppingCart shoppingCart) {
         // return total value of items in the shopping cart

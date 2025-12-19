@@ -7,6 +7,13 @@ import org.yearup.data.ProfileDao;
 import javax.sql.DataSource;
 import java.sql.*;
 
+/**
+ * MySQL implementation of the ProfileDao interface.
+ * This class provides database operations for creating, updating, and retrieving
+ * user profile information using JDBC and a MySQL data source. It extends the
+ * base DAO class to reuse common database connection logic. The class is managed
+ * by Spring and can be injected into services or controllers as needed.
+ */
 @Component
 public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
     // constructor to initialize the data source
@@ -14,6 +21,13 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
         super(dataSource);
     }
 
+    /**
+     * Creates a new user profile record in the database.
+     * This method inserts a new row into the profiles table using values from
+     * the provided Profile object. A parameterized SQL statement is used to
+     * protect against SQL injection. After the insert operation completes,
+     * the same Profile object is returned to the caller.
+     */
     @Override
     public Profile create(Profile profile) {
         // parameterized SQL to prevent SQL injection
@@ -44,6 +58,13 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
         }
     }
 
+    /**
+     * Updates an existing user profile in the database.
+     * This method modifies profile fields such as name, contact information,
+     * and address based on the provided user ID. A parameterized update query
+     * ensures safe execution and data integrity. The updated Profile object
+     * is returned after the database operation completes.
+     */
     @Override
     public Profile update(int userId, Profile profile) {
         // parameterized SQL to prevent SQL injection
@@ -83,6 +104,13 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
         }
     }
 
+    /**
+     * Retrieves a user profile from the database using the associated user ID.
+     * This method executes a parameterized select query to safely locate the
+     * profile record. If a matching profile is found, its fields are populated
+     * into a Profile object and returned. If no profile exists for the user ID,
+     * the method returns null.
+     */
     @Override
     public Profile getProfileByUserId(int id) {
         // parameterized SQL to prevent SQL injection
