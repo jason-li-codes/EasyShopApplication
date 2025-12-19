@@ -17,13 +17,14 @@ import java.util.Map;
 
 @Service
 public class OrderService {
-
+    // class contains the following attributes
     private OrderDao orderDao;
     private OrderLineItemDao orderLineItemDao;
     private ShoppingCartDao shoppingCartDao;
     private ProfileDao profileDao;
 
     @Autowired
+    // constructor to inject required DAOs
     public OrderService(OrderDao orderDao, OrderLineItemDao orderLineItemDao,
                         ShoppingCartDao shoppingCartDao, ProfileDao profileDao) {
         this.orderDao = orderDao;
